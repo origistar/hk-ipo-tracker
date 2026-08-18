@@ -44,7 +44,8 @@ async function main(){
 
   // 2) AH股拉A股：listed算真实溢价，ipo(招股中)存潜在溢价(发行价对比A股)
   for(const s of stocks.filter(s=>s.isAH && s.aCode)){
-    const sym = s.aCode.toLowerCase().startsWith('sh') ? s.aCode.toLowerCase() : 'sz'+s.aCode.slice(2);
+    const codeNum = s.aCode.replace(/[^\d]/g,'');
+    const sym = s.aCode.toUpperCase().endsWith('.SH') ? 'sh'+codeNum : 'sz'+codeNum;
     const q = parse(await get(sym));
     if(q){ s._aPrice = q.price;
       if(s._price) s._ahPremium = (q.price*RATE/s._price - 1)*100;
