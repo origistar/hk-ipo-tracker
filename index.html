@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f2f2f7">
+<title>港股打新 · 次新入通追踪</title>
+<style>
+  :root{
+    --bg:#f2f2f7; --card:#ffffff; --sep:#e5e5ea; --txt:#1c1c1e; --sub:#8e8e93;
+    --blue:#007aff; --green:#34c759; --orange:#ff9500; --purple:#af52de;
+    --gray:#9b9ba0; --up:#ff3b30; --down:#34c759;
+    --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 14px rgba(0,0,0,.05);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",sans-serif;
+    -webkit-font-smoothing:antialiased;padding-bottom:40px}
+  .wrap{max-width:560px;margin:0 auto;padding:0 14px}
+  header{padding:18px 4px 10px}
+  header h1{font-size:22px;font-weight:700;margin:0 0 2px;letter-spacing:-.3px}
+  header .meta{font-size:12px;color:var(--sub);line-height:1.5}
+  .seg{position:sticky;top:0;z-index:20;background:var(--bg);padding:8px 0 10px;
+    backdrop-filter:saturate(180%) blur(12px);-webkit-backdrop-filter:saturate(180%) blur(12px)}
+  .seg-bar{display:flex;background:#e3e3e8;border-radius:11px;padding:3px;gap:3px}
+  .seg-bar button{flex:1;border:0;background:transparent;font-size:13px;font-weight:600;
+    color:var(--txt);padding:8px 4px;border-radius:9px;transition:.2s}
+  .seg-bar button.on{background:#fff;box-shadow:var(--shadow);color:var(--blue)}
+  .filters{display:flex;gap:6px;margin:10px 0 4px;flex-wrap:wrap}
+  .filters button{border:1px solid var(--sep);background:#fff;color:var(--sub);
+    font-size:12px;padding:5px 12px;border-radius:20px;font-weight:600}
+  .filters button.on{background:var(--txt);color:#fff;border-color:var(--txt)}
+  /* 卡片(打新) */
+  .card{background:var(--card);border-radius:16px;padding:14px 15px;margin:11px 0;
+    box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.03)}
+  .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+  .nm{font-size:17px;font-weight:700;letter-spacing:-.2px}
+  .cd{font-size:12px;color:var(--sub);font-weight:600;margin-top:1px}
+  .tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px;white-space:nowrap}
+  .tag.bull{background:rgba(0,122,255,.12);color:var(--blue)}
+  .tag.demon{background:rgba(175,82,222,.13);color:var(--purple)}
+  .tag.flat{background:rgba(142,142,147,.16);color:var(--gray)}
+  .tag.risk{background:rgba(255,59,48,.11);color:var(--up);font-size:10px}
+  .tag.ipo{background:rgba(255,149,0,.14);color:var(--orange)}
+  .price{display:flex;align-items:baseline;gap:8px;margin:10px 0 4px}
+  .price .now{font-size:26px;font-weight:800;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+  .price .chg{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+  .mini{display:grid;grid-template-columns:1fr 1fr;gap:7px 12px;margin-top:9px;font-size:12.5px}
+  .mini div{display:flex;justify-content:space-between;gap:6px;border-bottom:1px solid #f0f0f3;padding-bottom:5px}
+  .mini span:first-child{color:var(--sub);font-weight:500;white-space:nowrap}
+  .mini span:last-child{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+  .cs{margin-top:10px;font-size:12px;color:var(--sub);line-height:1.55}
+  .cs b{color:var(--txt);font-weight:600}
+  .adv{margin-top:10px;background:#f7f7fa;border-radius:11px;padding:10px 11px;
+    font-size:12.5px;line-height:1.6;color:#3a3a3c}
+  .adv .h{font-weight:700;color:var(--orange);font-size:11.5px;margin-bottom:3px;display:block}
+  .conn{display:inline-block;margin-top:9px;font-size:11px;font-weight:700;
+    padding:3px 9px;border-radius:8px;background:rgba(52,199,89,.13);color:var(--green)}
+  .gate{background:linear-gradient(135deg,#fff7ec,#fff);border:1px solid #ffe2b8;
+    border-radius:13px;padding:11px 12px;margin-top:11px}
+  .gate .gtitle{font-size:12px;font-weight:700;color:var(--orange);margin-bottom:7px}
+  .bar{height:9px;background:#eee;border-radius:6px;overflow:hidden;position:relative;margin:6px 0 4px}
+  .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:linear-gradient(90deg,#ff9500,#ff3b30)}
+  .gate .gnum{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums}
+  .ahbox{background:rgba(0,122,255,.07);border:1px solid rgba(0,122,255,.18);
+    border-radius:13px;padding:11px 12px;margin-top:11px;font-size:12.5px;line-height:1.55}
+  .ahbox .gtitle{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:6px}
+  /* 表格(已上市) */
+  .tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;
+    box-shadow:var(--shadow);font-size:13px;margin-top:4px}
+  .tbl thead th{background:#f7f7fa;color:var(--sub);font-weight:600;font-size:11px;text-align:left;
+    padding:9px 9px;border-bottom:1px solid var(--sep)}
+  .tbl td{padding:10px 9px;border-bottom:1px solid #f0f0f3;vertical-align:middle}
+  .tbl .row:active{background:#fafafa}
+  .dotc{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+  .num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+  .detail td{background:#fafafa;padding:2px 9px 12px}
+  .up{color:var(--up)} .down{color:var(--down)} .mut{color:var(--sub)}
+  .note{font-size:11px;color:var(--sub);line-height:1.6;margin:14px 4px 4px;
+    background:#fff;border-radius:12px;padding:11px 12px;box-shadow:var(--shadow)}
+  .note b{color:var(--txt)}
+  .footer{text-align:center;color:var(--sub);font-size:11px;margin-top:16px;line-height:1.6}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:4px;vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>港股打新 · 次新入通追踪</h1>
+    <div class="meta" id="meta">数据加载中…</div>
+  </header>
+
+  <div class="seg">
+    <div class="seg-bar">
+      <button id="tab-ipo" onclick="switchTab('ipo')">🎯 打新待上市</button>
+      <button id="tab-listed" class="on" onclick="switchTab('listed')">📈 已上市次新</button>
+    </div>
+    <div class="filters" id="filters" style="display:none">
+      <button class="on" data-c="all" onclick="setFilter('all')">全部</button>
+      <button data-c="bull" onclick="setFilter('bull')">🐂 牛</button>
+      <button data-c="demon" onclick="setFilter('demon')">👹 妖</button>
+      <button data-c="flat" onclick="setFilter('flat')">😐 平</button>
+    </div>
+  </div>
+
+  <div id="list"></div>
+
+  <div class="note">
+    <b>入通规则（三类路径）：</b><br>
+    ① <b>AH股</b>：上市→价格稳定期（通常30天，自公开发售截止次日起算）结束即自动调入港股通，<b>不考核100亿市值门槛</b>（如君正03223约9-20~9-24入通）。<br>
+    ② <b>同股不同权(W)</b>：满上市6月+20日，且考察日前183日日均市值≥200亿、成交≥60亿。<br>
+    ③ <b>常规纯H新股</b>：走恒生综指半年度检讨（3/9月），考察期截至6/30或12/31，市值达94%覆盖率门槛（本次约101.56亿，随市况浮动）+流动性测试。<br>
+    <b>打新卡"涨多少能入通"仅对③类</b>（纯H）有意义；AH/W 按①②规则。最终名单以恒生指数公司公告（2026-08-21盘后）及沪深交易所为准。实时行情来自腾讯财经，红涨绿跌。
+  </div>
+  <div class="footer">本页为个人研究工具，非投资建议 · 数据源：Live Report / 港交所披露易 / 捷利交易宝 / 腾讯财经</div>
+</div>
+
+<script>
+const DATA = {
+  updated: "2026-08-18 21:04",
+  threshold: 100,
+  stocks: [
+    {"code":"03223.HK","name":"君正股份","board":"ipo","category":"ipo","ipoPrice":102.80,"ipoDate":"2026-08-17~08-20","listDate":"2026-08-25","totalShares":5.145,"raiseCap":529,"toConnectPct":0,"cornerstonePct":46.7,"corners":["创客天地","广发基金","高毅","华勤技术","工银理财","汇添富","奇点资产"],"cornerN":11,"sponsor":"国泰君安国际(独家)","isAH":true,"aCode":"300223.SZ","ahRule":"AH股·价格稳定期30天(自8-20公开发售截止次日起)结束后自动调入港股通,不考核100亿市值门槛","connectDate":"稳价期后≈9-20~9-24自动入通","industry":"存储+计算+模拟芯片(AH)","advice":"AH股,上市(8-25)后稳价期结束即自动入通(约9-20~9-24),与100亿市值门槛无关。芯片AH通常H较A折价,暗盘/首日若H显著低于A股比价可捞。基石11家(46.7%)含广发/高毅/工银理财,质量中上。打新资金可适度加仓,重点盯暗盘相对A股折价幅度定捞货价;潜在AH溢价见蓝框(发行价vs A股)。"},
+
+    {"code":"06656.HK","name":"思格新能","board":"listed","category":"bull","ipoPrice":324.20,"ipoDate":"2026-04-16","totalShares":2.49,"cornerstonePct":49.8,"corners":["淡马锡","高盛资管","高瓴","UBS","法国巴黎银行","AXA","博裕","景林","富国","太保","工银理财"],"cornerN":19,"sponsor":"中金/华泰/瑞银","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"AI光储充一体化","leader":"全球分布式光储一体机市占率第一(28.6%)","advice":"业绩炸裂(2025营收90亿/+577%,净利29亿),安全垫极高(现价≈发行价)。19家顶级基石背书。盘子825亿偏大压制弹性；华为专利诉讼悬剑。底仓首选,350以下分批,450-500止盈,10-16基石解禁前清。"},
+    {"code":"03277.HK","name":"长光辰芯","board":"listed","category":"bull","ipoPrice":39.88,"ipoDate":"2026-04-17","totalShares":4.35,"cornerstonePct":49.96,"corners":["高瓴","博裕","景林","源码","富国","广发","易方达","华夏","工银理财","惠理"],"cornerN":24,"sponsor":"中金/华泰","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"CMOS图像传感器","leader":"工业成像CIS全球第三(15.2%)","advice":"筹码极度集中(前10大承配人61%,公告警告),入通=流动性改善弹性最大。但已涨81%安全边际不足,24家基石近50%解禁砸盘风险。做弹性仓,68-75建,95-115止,10-16解禁前走。"},
+    {"code":"00068.HK","name":"群核科技","board":"listed","category":"bull","ipoPrice":7.62,"ipoDate":"2026-04-17","totalShares":17.26,"cornerstonePct":37.2,"corners":["泰康","阳光人寿","广发","Redwood","禾赛","弘毅"],"cornerN":9,"sponsor":"摩根士丹利/中金","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"空间智能/3D设计","leader":"空间智能第一股/杭州六小龙","advice":"从高点37.44深度回调-74%,埋伏空间大。9家优质基石,首次盈利。仓位25%,9-10建,13-15止,10-17解禁前清。"},
+    {"code":"01236.HK","name":"乐动机器人","board":"listed","category":"bull","ipoPrice":26.36,"ipoDate":"2026-05-11","totalShares":3.33,"cornerstonePct":31.5,"corners":["康成亨(仅1家)"],"cornerN":1,"sponsor":"中信/摩根大通","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"机器人视觉/割草","leader":"全球前十家用机器人7家客户","advice":"基石仅1家(31.5%)抛压最小,解禁日最远(11-11)。业绩+60%。机器人赛道热。仓位20%,36-42建,55-65止,可多拿至11月。"},
+
+    {"code":"02670.HK","name":"云迹","board":"listed","category":"demon","ipoPrice":95.60,"ipoDate":"2025-10-16","totalShares":0.687,"cornerstonePct":0,"corners":["无传统基石;HKEICL苏国资占配售40%"],"cornerN":0,"sponsor":"中金/摩根大通","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"酒店机器人/具身智能","leader":"机器人服务智能体第一股","advice":"总股本6872万极小+5657倍认购+国资吞40%配售+腰斩后低位。入通=放量爆拉确定性最高。单独妖股仓10-15%,145-155建,200-230止,无基石锁压但盯HKEICL态度。"},
+    {"code":"06675.HK","name":"琻捷电子","board":"listed","category":"demon","ipoPrice":18.36,"ipoDate":"2026-06-17","totalShares":3.82,"cornerstonePct":28.86,"corners":["9家机构"],"cornerN":9,"sponsor":"中金/华泰","isAH":false,"aCode":null,"connectDate":"2026-09-07(12-17解禁)","industry":"车规传感SoC/Physical AI","leader":"端侧无线智能芯片","advice":"芯片+AI双概念,5145倍认购,解禁日最远(12-17)。涨幅67%稍高。妖气次选,28以下小仓,目标+20~35%。"},
+    {"code":"03355.HK","name":"飞速创新","board":"listed","category":"demon","ipoPrice":41.60,"ipoDate":"2026-03-23","totalShares":4.06,"cornerstonePct":42.31,"corners":["11家机构"],"cornerN":11,"sponsor":"中金/招商","isAH":false,"aCode":null,"connectDate":"2026-09-07(9-23解禁紧)","industry":"网络通信/AI卖铲人","leader":"全球第二大DTC网络设备商","advice":"唯一盈利(2025净利6亿+51%,破发-11%安全边际高)。但基石9-23解禁仅距入通16天,砸盘+兑现共振。时间窗太紧,不建议重仓。"},
+
+    {"code":"01879.HK","name":"曦智科技-P","board":"listed","category":"flat","ipoPrice":183.20,"ipoDate":"2026-05","totalShares":null,"cornerstonePct":65.1,"corners":["多家"],"cornerN":null,"sponsor":"中金","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"光计算","leader":"光计算芯片","advice":"基石65%过重,解禁砸盘风险极大;已涨91%。入通弹性被解禁吞噬,观望。"},
+    {"code":"06872.HK","name":"丹诺医药-B","board":"listed","category":"flat","ipoPrice":75.70,"ipoDate":"2026","totalShares":null,"cornerstonePct":34.8,"corners":["多家"],"cornerN":null,"sponsor":"摩根士丹利","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"抗感染创新药","leader":"耐药菌新药","advice":"已涨153%高位,创新药未盈利,入通即兑现风险高。平。"},
+    {"code":"06636.HK","name":"极视角","board":"listed","category":"flat","ipoPrice":null,"ipoDate":"2026","totalShares":null,"cornerstonePct":null,"corners":["—"],"cornerN":null,"sponsor":"—","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"AI视觉","leader":"计算机视觉PaaS","advice":"已涨137%,涨幅透支。平,不入埋伏主选。"},
+    {"code":"02723.HK","name":"深演智能","board":"listed","category":"flat","ipoPrice":null,"ipoDate":"2026","totalShares":null,"cornerstonePct":null,"corners":["—"],"cornerN":null,"sponsor":"—","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"AI营销","leader":"决策AI","advice":"涨幅超10倍,高位接盘区。平/避雷。"},
+    {"code":"03310.HK","name":"云英谷","board":"listed","category":"flat","ipoPrice":null,"ipoDate":"2026","totalShares":null,"cornerstonePct":null,"corners":["—"],"cornerN":null,"sponsor":"—","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"OLED驱动芯片","leader":"AMOLED显示驱动","advice":"芯片题材,但涨幅已高。平。"},
+    {"code":"06658.HK","name":"溜溜梅","board":"listed","category":"flat","ipoPrice":null,"ipoDate":"2026","totalShares":null,"cornerstonePct":null,"corners":["—"],"cornerN":null,"sponsor":"—","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"果类零食","leader":"休闲食品","advice":"已涨286%,消费股弹性有限。平/避雷。"},
+    {"code":"01392.HK","name":"海清智元","board":"listed","category":"flat","ipoPrice":null,"ipoDate":"2026","totalShares":null,"cornerstonePct":null,"corners":["—"],"cornerN":null,"sponsor":"—","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"多光谱AI","leader":"多光谱感知","advice":"AI概念,盘子适中。平,观察。"},
+    {"code":"01956.HK","name":"中科闻歌","board":"listed","category":"flat","ipoPrice":null,"ipoDate":"2026","totalShares":null,"cornerstonePct":null,"corners":["—"],"cornerN":null,"sponsor":"—","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"AI大数据","leader":"决策智能","advice":"AI政务大数据,概念温和。平。"},
+    {"code":"02272.HK","name":"科拓股份","board":"listed","category":"flat","ipoPrice":null,"ipoDate":"2026","totalShares":null,"cornerstonePct":null,"corners":["—"],"cornerN":null,"sponsor":"—","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"智慧停车","leader":"停车资产运营","advice":"细分赛道,弹性一般。平。"},
+    {"code":"02729.HK","name":"凯乐士科技","board":"listed","category":"flat","ipoPrice":null,"ipoDate":"2026","totalShares":null,"cornerstonePct":null,"corners":["—"],"cornerN":null,"sponsor":"—","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"物流机器人","leader":"智能物流","advice":"机器人赛道但涨幅已高。平。"},
+    {"code":"06938.HK","name":"瑞博生物-B","board":"listed","category":"flat","ipoPrice":57.97,"ipoDate":"2026-01","totalShares":null,"cornerstonePct":42.5,"corners":["多家"],"cornerN":null,"sponsor":"中金","isAH":false,"aCode":null,"connectDate":"2026-09-07(已解禁7-09)","industry":"小核酸药物","leader":"siRNA","advice":"基石7-09已解禁,短期抛压;破发。平/观望。"},
+    {"code":"00600.HK","name":"爱芯元智","board":"listed","category":"flat","ipoPrice":null,"ipoDate":"2026","totalShares":null,"cornerstonePct":null,"corners":["—"],"cornerN":null,"sponsor":"—","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"AI推理SoC","leader":"边缘AI芯片","advice":"破发-51%,基本面存疑。平/避雷。"},
+    {"code":"03625.HK","name":"傅里叶","board":"listed","category":"flat","ipoPrice":40.00,"ipoDate":"2026","totalShares":null,"cornerstonePct":0,"corners":["无基石"],"cornerN":0,"sponsor":"—","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"智能音频芯片","leader":"端侧音频AI","advice":"无基石是亮点,但已涨137%涨幅透支。可小仓博弈,非主选。"},
+    {"code":"02697.HK","name":"真健康医疗-B","board":"listed","category":"flat","ipoPrice":null,"ipoDate":"2026","totalShares":null,"cornerstonePct":null,"corners":["—"],"cornerN":null,"sponsor":"—","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"经皮穿刺机器人","leader":"手术机器人","advice":"已涨526%,高位接盘。平/避雷。"},
+    {"code":"02672.HK","name":"白鸽在线","board":"listed","category":"flat","ipoPrice":null,"ipoDate":"2026","totalShares":null,"cornerstonePct":null,"corners":["—"],"cornerN":null,"sponsor":"—","isAH":false,"aCode":null,"connectDate":"2026-09-07","industry":"保险科技","leader":"保险数智化","advice":"已涨391%,高位。平/避雷。"}
+  ]
+};
+
+const CAT_NAME={bull:"🐂 牛股",demon:"👹 妖股",flat:"😐 平股",ipo:"🎯 打新"};
+const CAT_CLS={bull:"bull",demon:"demon",flat:"flat",ipo:"ipo"};
+const CAT_DOT={bull:"#007aff",demon:"#af52de",flat:"#9b9ba0"};
+const CAT_TX={bull:"牛",demon:"妖",flat:"平"};
+let curTab="listed", curFilter="all";
+
+function fmt(n,d=2){ if(n==null||isNaN(n))return "—"; return Number(n).toLocaleString("zh-CN",{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function pct(n){ if(n==null||isNaN(n))return "—"; return (n>=0?"+":"")+n.toFixed(1)+"%"; }
+
+function loadQuote(sym){
+  return new Promise(res=>{
+    const s=document.createElement("script");
+    s.src="https://qt.gtimg.cn/q="+sym;
+    s.onload=()=>{ try{ const raw=window["v_"+sym]||""; const a=raw.split("~");
+      res(a&&a[3]?{price:+a[3],prev:+a[4],name:a[1]}:null); }catch(e){ res(null); } };
+    s.onerror=()=>res(null);
+    document.head.appendChild(s);
+    setTimeout(()=>res(null),4000);
+  });
+}
+
+async function refreshLive(){
+  const RATE=0.92;
+  // 所有标的：listed拉港股行情；isAH拉A股(算真实溢价/潜在溢价)
+  await Promise.all(DATA.stocks.map(async s=>{
+    if(s.board==="listed"){
+      const q=await loadQuote("hk"+s.code.replace(".HK",""));
+      if(q&&q.price){ s._price=q.price; if(s.ipoPrice) s._chgFromIpo=(q.price/s.ipoPrice-1)*100; }
+    }
+    if(s.isAH&&s.aCode){
+      const codeNum=s.aCode.replace(/[^\d]/g,'');
+      const sym=s.aCode.toUpperCase().endsWith('.SH')?'sh'+codeNum:'sz'+codeNum;
+      const q=await loadQuote(sym);
+      if(q&&q.price){ s._aPrice=q.price;
+        if(s.board==="listed"&&s._price) s._ahPremium=(q.price*RATE/s._price-1)*100;
+        else s._ahPotential=(q.price*RATE/s.ipoPrice-1)*100; // 招股中潜在溢价
+      }
+    }
+  }));
+  render();
+}
+
+function ipoCard(s){
+  const tag=`<span class="tag ipo">🎯 打新</span>`;
+  let gate="";
+  if(s.isAH){
+    gate=`<div class="ahbox"><div class="gtitle">🔵 AH股入通规则（非100亿门槛）</div>
+      ${s.ahRule||""}<br>
+      <b>潜在AH溢价</b>（发行价 vs A股）：<span class="${s._ahPotential>=0?'up':'down'}">${s._ahPotential!=null?pct(s._ahPotential):"计算中…"}</span>
+      ${s._aPrice?`<br><span class="mut">A股${s.aCode} 现价 ${fmt(s._aPrice)} · 发行价HKD${fmt(s.ipoPrice)}</span>`:""}
+    </div>`;
+  } else {
+    const pctNeed=s.toConnectPct, w=Math.min(100,Math.max(4,(s.raiseCap/DATA.threshold)*100));
+    const needCls=pctNeed<=0?"up":(pctNeed>200?"down":"mut");
+    gate=`<div class="gate"><div class="gtitle">📊 入通市值门槛测算（≈${DATA.threshold}亿）</div>
+      <div class="mini" style="grid-template-columns:1fr 1fr;margin-top:4px">
+        <div><span>发行市值</span><span>${fmt(s.raiseCap)}亿</span></div>
+        <div><span>达标需涨</span><span class="${needCls}">${pctNeed<=0?"已达标✅":("+"+pctNeed+"%")}</span></div>
+      </div>
+      <div class="bar"><i style="width:${w}%"></i></div>
+      <div class="mut" style="font-size:11px">发行市值占门槛 ${w.toFixed(0)}%</div>
+    </div>`;
+  }
+  const csTxt=s.cornerN==null?"—":`${s.cornerN}家 · ${s.cornerstonePct?fmt(s.cornerstonePct,1)+"%":"比例—"}<br><span class="mut" style="font-weight:500">${s.corners.slice(0,4).join("、")}${s.corners.length>4?" 等":""}</span>`;
+  const leader=s.leader?`<div class="cs"><b>地位：</b>${s.leader}</div>`:"";
+  const adv=s.advice?`<div class="adv"><span class="h">💡 综合建议</span>${s.advice}</div>`:"";
+  return `<div class="card">
+    <div class="top"><div><div class="nm">${s.name}</div><div class="cd">${s.code} · ${s.industry}</div></div>${tag}</div>
+    <div class="price"><span class="now mut">招股中</span><span class="chg mut">发售价 ${fmt(s.ipoPrice)}</span></div>
+    <div class="mini">
+      <div><span>IPO价</span><span>${fmt(s.ipoPrice)}</span></div>
+      <div><span>上市日</span><span>${s.listDate||"—"}</span></div>
+      <div><span>基石</span><span style="text-align:left">${csTxt}</span></div>
+      <div><span>保荐</span><span>${s.sponsor||"—"}</span></div>
+    </div>
+    ${leader}${gate}${adv}
+    <span class="conn">入通 ${s.connectDate}</span>
+  </div>`;
+}
+
+function listedTable(){
+  let arr=DATA.stocks.filter(s=>s.board==="listed");
+  if(curFilter!=="all") arr=arr.filter(s=>s.category===curFilter);
+  const ord={bull:0,demon:1,flat:2}; arr.sort((a,b)=>ord[a.category]-ord[b.category]);
+  let h=`<table class="tbl"><thead><tr><th>名称/代码</th><th>类</th><th>现价</th><th>上市以来</th><th>基石%</th><th>入通</th></tr></thead><tbody>`;
+  for(const s of arr){
+    const chg=s._chgFromIpo, chgCls=chg==null?"mut":(chg>=0?"up":"down");
+    h+=`<tr class="row" onclick="toggle('${s.code}')">
+      <td><b>${s.name}</b><br><span class="mut" style="font-size:11px">${s.code}</span></td>
+      <td><span class="dotc" style="background:${CAT_DOT[s.category]}"></span>${CAT_TX[s.category]}${s.risk?' <span class="tag risk">⚠️避雷</span>':''}</td>
+      <td class="num">${s._price!=null?fmt(s._price):"—"}</td>
+      <td class="num ${chgCls}">${chg==null?"—":pct(chg)}</td>
+      <td class="num">${s.cornerstonePct!=null?fmt(s.cornerstonePct,0):"—"}</td>
+      <td style="font-size:10.5px;line-height:1.3">${s.connectDate||"—"}</td></tr>`;
+    const leader=s.leader?`<div><span class="mut">地位</span> ${s.leader}</div>`:"";
+    const cs=s.cornerN?`<div><span class="mut">基石</span> ${s.cornerN}家·${s.cornerstonePct?fmt(s.cornerstonePct,0)+"%":""} ${s.corners.slice(0,5).join("、")}</div>`:"";
+    const ah=s._ahPremium!=null?`<div><span class="mut">AH溢价</span> <span class="${s._ahPremium>=0?'up':'down'}">${pct(s._ahPremium)}</span></div>`:"";
+    const adv=s.advice?`<div class="adv" style="margin-top:7px"><span class="h">💡 建议</span>${s.advice}</div>`:"";
+    h+=`<tr class="detail" id="d_${s.code}" style="display:none"><td colspan="6">
+      <div class="mini" style="grid-template-columns:1fr 1fr;margin:4px 0 2px">${leader}<div><span class="mut">保荐</span> ${s.sponsor||"—"}</div>${cs}${ah}</div>
+      <div class="mut" style="font-size:11.5px;margin:2px 0">行业：${s.industry}${s.greyMarket!=null?` · 暗盘 ${s.greyMarket>0?"+":""}${s.greyMarket}%`:""}</div>
+      ${adv}</td></tr>`;
+  }
+  h+=`</tbody></table>`;
+  return h;
+}
+
+function toggle(code){ const d=document.getElementById("d_"+code); if(d) d.style.display=d.style.display==="none"?"table-row":"none"; }
+
+function render(){
+  const list=document.getElementById("list");
+  if(curTab==="ipo"){ const arr=DATA.stocks.filter(s=>s.board==="ipo");
+    list.innerHTML=arr.length?arr.map(ipoCard).join(""):`<div class="mut" style="padding:20px;text-align:center">暂无待上市新股</div>`; }
+  else list.innerHTML=listedTable();
+  document.getElementById("meta").innerHTML=
+    `<span class="dot"></span>更新 ${DATA.updated} · 共 ${DATA.stocks.length} 只（待上市 ${DATA.stocks.filter(s=>s.board==='ipo').length} / 已上市 ${DATA.stocks.filter(s=>s.board==='listed').length}）· 行情实时`;
+}
+function switchTab(t){
+  curTab=t;
+  document.getElementById("tab-ipo").classList.toggle("on",t==="ipo");
+  document.getElementById("tab-listed").classList.toggle("on",t==="listed");
+  document.getElementById("filters").style.display=t==="listed"?"flex":"none";
+  if(t==="ipo")curFilter="all";
+  render();
+}
+function setFilter(c){
+  curFilter=c;
+  document.querySelectorAll("#filters button").forEach(b=>b.classList.toggle("on",b.dataset.c===c));
+  render();
+}
+
+render(); refreshLive();
+fetch("data.json?t="+Date.now()).then(r=>r.json()).then(d=>{ if(d&&d.stocks){ DATA.updated=d.updated; DATA.stocks=d.stocks; render(); refreshLive(); } }).catch(()=>{});
+setInterval(refreshLive, 60000);
+</script>
+</body>
+</html>
