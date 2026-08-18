@@ -48,7 +48,14 @@ function run(args) {
 // 检查是否有变更
 const st = run(['status', '--porcelain']);
 if (!st.out.trim()) {
-  console.log('[push] 无文件变更，跳过提交');
+  // 工作区干净，但可能有已 commit 未 push 的提交（如之前网络失败），补推
+  const ahead = run(['rev-list', '--count', 'origin/main..HEAD']);
+  if ((ahead.out.trim() || '0') !== '0') {
+    console.log('[push] 工作区无变更，但有未推送提交，补推');
+    const p = run(['push', 'origin', 'main']);
+    process.exit(p.status === 0 ? 0 : 1);
+  }
+  console.log('[push] 无文件变更且无未推送提交，跳过');
   process.exit(0);
 }
 
