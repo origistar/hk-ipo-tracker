@@ -173,7 +173,7 @@ function loadQuote(sym){
 }
 
 async function refreshLive(){
-  const RATE=0.92;
+  const RATE = (DATA.hkdCnyRate && DATA.hkdCnyRate > 0.5) ? DATA.hkdCnyRate : 0.92; // 实时汇率 fallback
   // 所有标的：listed拉港股行情；isAH拉A股(算真实溢价/潜在溢价)
   await Promise.all(DATA.stocks.map(async s=>{
     if(s.board==="listed"){

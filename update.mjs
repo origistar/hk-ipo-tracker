@@ -5,7 +5,22 @@ import fs from 'fs';
 import https from 'https';
 
 const FILE = new URL('./data.json', import.meta.url);
-const RATE = 0.92; // HKD -> CNY 近似汇率(用于AH溢价)
+
+// 实时抓取 HKD/CNY 汇率（新浪财经），失败 fallback 到上一次值或 0.92
+async function fetchRate(prev){
+  try {
+    const raw = await new Promise((resolve)=>{
+      const req = https.get('https://hq.sinajs.cn/list=fx_shkdcny',
+        {timeout:5000, headers:{'User-Agent':'Mozilla/5.0','Referer':'https://finance.sina.com.cn/'}},
+        (res)=>{ let b=''; res.on('data',d=>b+=d); res.on('end',()=>resolve(b)); });
+      req.on('error',()=>resolve(''));
+      req.on('timeout',()=>{req.destroy(); resolve('');});
+    });
+    const m = raw.match(/="([^"]*)"/);
+    if(m){ const f = m[1].split(','); const r = +f[1]; if(r>0 && r<2) return r; }
+  } catch(e){ /* ignore */ }
+  return prev || 0.92;
+}
 
 function get(sym){
   return new Promise((resolve)=>{
@@ -31,6 +46,11 @@ async function main(){
   const stocks = data.stocks;
   let ok=0, fail=0;
 
+  // 0) 抓实时 HKD/CNY 汇率
+  const rate = await fetchRate(data.hkdCnyRate);
+  data.hkdCnyRate = +rate.toFixed(6);
+  console.log(`[update] HKD/CNY 实时汇率: ${data.hkdCnyRate}`);
+
   // 1) 已上市标的拉港股行情
   for(const s of stocks.filter(s=>s.board==='listed')){
     const raw = await get('hk'+s.code.replace('.HK',''));
@@ -48,8 +68,8 @@ async function main(){
     const sym = s.aCode.toUpperCase().endsWith('.SH') ? 'sh'+codeNum : 'sz'+codeNum;
     const q = parse(await get(sym));
     if(q){ s._aPrice = q.price;
-      if(s._price) s._ahPremium = (q.price*RATE/s._price - 1)*100;
-      else if(s.ipoPrice) s._ahPotential = (q.price*RATE/s.ipoPrice - 1)*100;
+      if(s._price) s._ahPremium = (q.price*rate/s._price - 1)*100;
+      else if(s.ipoPrice) s._ahPotential = (q.price*rate/s.ipoPrice - 1)*100;
     }
   }
 
