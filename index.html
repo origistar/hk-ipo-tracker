@@ -268,10 +268,26 @@ function listedTable(){
     const cs=s.cornerN?`<div><span class="mut">基石</span> ${s.cornerN}家·${s.cornerstonePct?fmt(s.cornerstonePct,0)+"%":""} ${s.corners.slice(0,5).join("、")}</div>`:"";
     const ah=s._ahPremium!=null?`<div><span class="mut">AH溢价</span> <span class="${s._ahPremium>=0?'up':'down'}">${pct(s._ahPremium)}</span></div>`:"";
     const adv=s.advice?`<div class="adv" style="margin-top:7px"><span class="h">💡 建议</span>${s.advice}</div>`:"";
+    const scoreVal=s.score!=null?s.score:null;
+    const scCls=scoreVal==null?"mut":(scoreVal>=70?"up":scoreVal<50?"down":"mut");
+    const scColor=scCls==="up"?"background:rgba(255,59,48,.12);color:var(--up)":scCls==="down"?"background:rgba(52,199,89,.13);color:var(--green)":"background:rgba(120,120,128,.12);color:#888";
+    const metricsHtml=`<div class="mut" style="font-size:11px;margin:6px 0 2px;font-weight:700">📊 多维度评分</div>
+      <div class="mini" style="grid-template-columns:1fr 1fr 1fr">
+        <div><span class="mut">基石%</span> ${s.cornerstonePct!=null?fmt(s.cornerstonePct,0)+'%':'—'}</div>
+        <div><span class="mut">发行市值</span> ${s.raiseCap?fmt(s.raiseCap,0)+'亿':'—'}</div>
+        <div><span class="mut">上市以来</span> ${s._chgFromIpo!=null?pct(s._chgFromIpo):'—'}</div>
+        <div><span class="mut">入通</span> ${s.connectDate||'—'}</div>
+        <div><span class="mut">锁定期</span> ${s.lockup||'—'}</div>
+        <div><span class="mut">解禁日</span> ${s.unlockDate||'—'}</div>
+        <div><span class="mut">流通股</span> ${s.floatShares!=null?fmt(s.floatShares,2)+'亿':'—'}</div>
+        <div><span class="mut">AH溢价</span> ${s._ahPremium!=null?pct(s._ahPremium):'—'}</div>
+        <div><span class="mut">风险</span> ${s.riskLevel||(s.risk?'高':'—')}</div>
+      </div>
+      ${scoreVal!=null?`<div style="display:inline-block;margin-top:6px;padding:3px 10px;border-radius:8px;font-size:12px;font-weight:700;${scColor}">综合评分 <b>${scoreVal}</b>/100</div>`:''}`;
     h+=`<tr class="detail" id="d_${s.code}" style="display:none"><td colspan="6">
       <div class="mini" style="grid-template-columns:1fr 1fr;margin:4px 0 2px">${leader}<div><span class="mut">保荐</span> ${s.sponsor||"—"}</div>${cs}${ah}</div>
       <div class="mut" style="font-size:11.5px;margin:2px 0">行业：${s.industry}${s.greyMarket!=null?` · 暗盘 ${s.greyMarket>0?"+":""}${s.greyMarket}%`:""}</div>
-      ${adv}</td></tr>`;
+      ${adv}${metricsHtml}</td></tr>`;
   }
   h+=`</tbody></table>`;
   return h;

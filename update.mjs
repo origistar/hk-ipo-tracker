@@ -78,6 +78,17 @@ async function main(){
   const bj = new Date(now.getTime() + (8*60 + now.getTimezoneOffset())*60000);
   const p2 = n => String(n).padStart(2,'0');
   data.updated = `${bj.getFullYear()}-${p2(bj.getMonth()+1)}-${p2(bj.getDate())} ${p2(bj.getHours())}:${p2(bj.getMinutes())}`;
+
+  // 2.5) 转板：招股中标的若 listDate 已过，自动转入 listed 板块
+  const todayStr = `${bj.getFullYear()}-${p2(bj.getMonth()+1)}-${p2(bj.getDate())}`;
+  for(const s of stocks.filter(s=>s.board==='ipo')){
+    if(s.listDate && s.listDate <= todayStr){
+      s.board = 'listed';
+      s.category = s.risk ? 'demon' : 'flat'; // 保守默认,后续可人工微调
+      console.log(`[update] 转板: ${s.name}(${s.code}) 已于 ${s.listDate} 上市，转入 listed 板块`);
+    }
+  }
+
   fs.writeFileSync(FILE, JSON.stringify(data,null,2));
   console.log(`[update] 行情刷新完成 成功${ok}/失败${fail}  AH溢价${stocks.filter(s=>s._ahPremium!=null).length}只  时间${data.updated}`);
 }

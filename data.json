@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-24 11:10",
+  "updated": "2026-08-24 11:19",
   "threshold": 100,
   "stocks": [
     {
@@ -32,8 +32,8 @@
       "connectDate": "稳价期后≈9-20~9-24自动入通",
       "industry": "存储+计算+模拟芯片(AH)",
       "advice": "AH股,上市(8-25)后稳价期结束即自动入通(约9-20~9-24),与100亿市值门槛无关。芯片AH通常H较A折价,暗盘/首日若H显著低于A股比价可捞。基石11家(46.7%)含广发/高毅/工银理财,质量中上。打新资金可适度加仓,重点盯暗盘相对A股折价幅度定捞货价;潜在AH溢价见卡片(发行价vs A股)。",
-      "_aPrice": 131.81,
-      "_ahPotential": 9.993861510566159
+      "_aPrice": 132.86,
+      "_ahPotential": 10.860563679447477
     },
     {
       "code": "06656.HK",
@@ -66,7 +66,13 @@
       "leader": "全球分布式光储一体机市占率第一(28.6%)",
       "advice": "业绩炸裂(2025营收90亿/+577%,净利29亿),安全垫极高(现价≈发行价)。19家顶级基石背书。盘子825亿偏大压制弹性；华为专利诉讼悬剑。底仓首选,350以下分批,450-500止盈,10-16基石解禁前清。",
       "_price": 335.6,
-      "_chgFromIpo": 3.516347933374475
+      "_chgFromIpo": 3.516347933374475,
+      "raiseCap": 807.3,
+      "riskLevel": "低",
+      "lockup": "基石6个月/控股股东12个月",
+      "unlockDate": "2026-10-15(基石)/2027-04-16(控股)",
+      "floatShares": 1.42,
+      "score": 70
     },
     {
       "code": "03277.HK",
@@ -97,8 +103,14 @@
       "industry": "CMOS图像传感器",
       "leader": "工业成像CIS全球第三(15.2%)",
       "advice": "筹码极度集中(前10大承配人61%,公告警告),入通=流动性改善弹性最大。但已涨81%安全边际不足,24家基石近50%解禁砸盘风险。做弹性仓,68-75建,95-115止,10-16解禁前走。",
-      "_price": 68.95,
-      "_chgFromIpo": 72.89368104312939
+      "_price": 68.6,
+      "_chgFromIpo": 72.01604814443327,
+      "raiseCap": 173.5,
+      "riskLevel": "低",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 82
     },
     {
       "code": "00068.HK",
@@ -126,7 +138,13 @@
       "leader": "空间智能第一股/杭州六小龙",
       "advice": "从高点37.44深度回调-74%,埋伏空间大。9家优质基石,首次盈利。仓位25%,9-10建,13-15止,10-17解禁前清。",
       "_price": 8.495,
-      "_chgFromIpo": 11.482939632545918
+      "_chgFromIpo": 11.482939632545918,
+      "raiseCap": 131.5,
+      "riskLevel": "中",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 70
     },
     {
       "code": "01236.HK",
@@ -148,8 +166,14 @@
       "industry": "机器人视觉/割草",
       "leader": "全球前十家用机器人7家客户",
       "advice": "基石仅1家(31.5%)抛压最小,解禁日最远(11-11)。业绩+60%。机器人赛道热。仓位20%,36-42建,55-65止,可多拿至11月。",
-      "_price": 37.48,
-      "_chgFromIpo": 42.18512898330804
+      "_price": 37.5,
+      "_chgFromIpo": 42.261001517450694,
+      "raiseCap": 87.8,
+      "riskLevel": "中",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 71
     },
     {
       "code": "02670.HK",
@@ -171,8 +195,14 @@
       "industry": "酒店机器人/具身智能",
       "leader": "机器人服务智能体第一股",
       "advice": "总股本6872万极小+5657倍认购+国资吞40%配售+腰斩后低位。入通=放量爆拉确定性最高。单独妖股仓10-15%,145-155建,200-230止,无基石锁压但盯HKEICL态度。",
-      "_price": 129.8,
-      "_chgFromIpo": 35.774058577405874
+      "_price": 127.3,
+      "_chgFromIpo": 33.15899581589959,
+      "raiseCap": 65.7,
+      "riskLevel": "中",
+      "lockup": "控股股东12个月",
+      "unlockDate": "2026-10-16",
+      "floatShares": 0.62,
+      "score": 51
     },
     {
       "code": "06675.HK",
@@ -194,8 +224,14 @@
       "industry": "车规传感SoC/Physical AI",
       "leader": "端侧无线智能芯片",
       "advice": "芯片+AI双概念,5145倍认购,解禁日最远(12-17)。涨幅67%稍高。妖气次选,28以下小仓,目标+20~35%。",
-      "_price": 32.8,
-      "_chgFromIpo": 78.64923747276687
+      "_price": 32.66,
+      "_chgFromIpo": 77.8867102396514,
+      "raiseCap": 70.1,
+      "riskLevel": "中",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 73
     },
     {
       "code": "03355.HK",
@@ -217,8 +253,14 @@
       "industry": "网络通信/AI卖铲人",
       "leader": "全球第二大DTC网络设备商",
       "advice": "唯一盈利(2025净利6亿+51%,破发-11%安全边际高)。但基石9-23解禁仅距入通16天,砸盘+兑现共振。时间窗太紧,不建议重仓。",
-      "_price": 36.7,
-      "_chgFromIpo": -11.778846153846146
+      "_price": 36.66,
+      "_chgFromIpo": -11.875000000000014,
+      "raiseCap": 168.9,
+      "riskLevel": "低",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 70
     },
     {
       "code": "01879.HK",
@@ -240,8 +282,14 @@
       "industry": "光计算",
       "leader": "光计算芯片",
       "advice": "基石65%过重,解禁砸盘风险极大;已涨91%。入通弹性被解禁吞噬,观望。",
-      "_price": 309.8,
-      "_chgFromIpo": 69.10480349344981
+      "_price": 307,
+      "_chgFromIpo": 67.57641921397382,
+      "raiseCap": null,
+      "riskLevel": "低",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 82
     },
     {
       "code": "06872.HK",
@@ -263,8 +311,14 @@
       "industry": "抗感染创新药",
       "leader": "耐药菌新药",
       "advice": "已涨153%高位,创新药未盈利,入通即兑现风险高。平。",
-      "_price": 193.7,
-      "_chgFromIpo": 155.8784676354029
+      "_price": 193.1,
+      "_chgFromIpo": 155.08586525759574,
+      "raiseCap": null,
+      "riskLevel": "中",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 73
     },
     {
       "code": "06636.HK",
@@ -289,8 +343,14 @@
       "leader": "AI视觉PaaS/国家级专精特新小巨人",
       "risk": false,
       "advice": "IPO 40.00,暗盘+55.5%,首日+150%(收100)。超购4591倍,基石仅2家(1.05%)锁仓极轻。现价已涨137%透支,但AI视觉赛道有想象空间。平,不入埋伏主选。",
-      "_price": 93.65,
-      "_chgFromIpo": 134.125
+      "_price": 93.5,
+      "_chgFromIpo": 133.75,
+      "raiseCap": null,
+      "riskLevel": "中",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 52
     },
     {
       "code": "02723.HK",
@@ -313,8 +373,14 @@
       "leader": "中国最大营销决策AI应用提供商",
       "risk": true,
       "advice": "⚠️避雷:IPO 55.50,首日+265.77%,现价涨幅超10倍!无基石无绿鞋,净利三年缩水85%(0.61→0.22→0.09亿),毛利持续下滑。高位接盘区,入通=散户接盘。坚决不碰。",
-      "_price": 618,
-      "_chgFromIpo": 1013.5135135135135
+      "_price": 617,
+      "_chgFromIpo": 1011.7117117117116,
+      "raiseCap": null,
+      "riskLevel": "高",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 48
     },
     {
       "code": "03310.HK",
@@ -338,8 +404,14 @@
       "leader": "AMOLED显示驱动全球第五/中国大陆第一",
       "risk": false,
       "advice": "IPO 20.81,基石2家(35.37%,武岳峰系产业资本)。AMOLED驱动芯片细分龙头,Micro-OLED全球第二。涨幅已高但基本面扎实(营收11亿/+24%CAGR)。平,观察。",
-      "_price": 26.74,
-      "_chgFromIpo": 28.49591542527632
+      "_price": 26.7,
+      "_chgFromIpo": 28.30370014416146,
+      "raiseCap": null,
+      "riskLevel": "中",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 67
     },
     {
       "code": "06658.HK",
@@ -362,8 +434,14 @@
       "leader": "中国果类零食零售额第一(份额4.9%)",
       "risk": true,
       "advice": "⚠️避雷:IPO 43.58,首日+193.71%(收128),超购6586.73倍历史级。消费股弹性有限,梅冻市占率45.7%但品类天花板可见。已涨286%透支,入通后消费股难有爆发力。不碰。",
-      "_price": 140.4,
-      "_chgFromIpo": 222.1661312528683
+      "_price": 140,
+      "_chgFromIpo": 221.24827902707668,
+      "raiseCap": null,
+      "riskLevel": "中",
+      "lockup": "控股股东12个月/基石6个月",
+      "unlockDate": "2027-06-14(控股)/2027-03-14(基石)",
+      "floatShares": 0.79,
+      "score": 48
     },
     {
       "code": "01392.HK",
@@ -386,8 +464,14 @@
       "leader": "多光谱AI行业第一/物理AI第一股",
       "risk": false,
       "advice": "IPO 7.20,首日+258%(收25.8~26.7),超购7181倍。无基石,但'物理AI'概念稀缺+多光谱赛道龙头。客户集中度高(前五占64.8%)是隐忧。平,观察。",
-      "_price": 24.32,
-      "_chgFromIpo": 237.77777777777777
+      "_price": 24.16,
+      "_chgFromIpo": 235.55555555555557,
+      "raiseCap": null,
+      "riskLevel": "中",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 52
     },
     {
       "code": "01956.HK",
@@ -415,8 +499,14 @@
       "leader": "'中国版Palantir'/决策智能第一股(份额10.2%)",
       "risk": false,
       "advice": "IPO 60.70,基石6家(26.97%,国资+头部资管),超购5966倍。中科院自动化所孵化,毛利率51.2%↑,NDR 139.5%。'决策大模型'差异化赛道。平,可小仓跟踪。",
-      "_price": 86.45,
-      "_chgFromIpo": 42.42174629324546
+      "_price": 85.35,
+      "_chgFromIpo": 40.60955518945632,
+      "raiseCap": null,
+      "riskLevel": "中",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 64
     },
     {
       "code": "02272.HK",
@@ -439,8 +529,14 @@
       "leader": "智慧停车空间运营全国第二(份额3.3%)",
       "risk": false,
       "advice": "IPO 39.55,首日+203.92%(收120.2),超购2115倍。无基石,腾讯是股东(Pre-IPO)。智慧停车赛道稳健但弹性一般。平。",
-      "_price": 113.7,
-      "_chgFromIpo": 187.4841972187105
+      "_price": 115,
+      "_chgFromIpo": 190.77117572692796,
+      "raiseCap": null,
+      "riskLevel": "中",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 52
     },
     {
       "code": "02729.HK",
@@ -464,8 +560,14 @@
       "leader": "中国前五大智能场内物流机器人公司",
       "risk": false,
       "advice": "IPO 16.66(区间下限),暗盘+82.59%,超购2153倍。无基石,物流机器人赛道热。涨幅已高但机器人概念有支撑。平。",
-      "_price": 34.7,
-      "_chgFromIpo": 108.28331332533017
+      "_price": 34.14,
+      "_chgFromIpo": 104.92196878751501,
+      "raiseCap": null,
+      "riskLevel": "中",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 52
     },
     {
       "code": "06938.HK",
@@ -487,8 +589,14 @@
       "industry": "小核酸药物",
       "leader": "siRNA",
       "advice": "基石7-09已解禁,短期抛压;破发。平/观望。",
-      "_price": 58,
-      "_chgFromIpo": 0.05175090564084606
+      "_price": 57.85,
+      "_chgFromIpo": -0.20700362256339533,
+      "raiseCap": null,
+      "riskLevel": "低",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 67
     },
     {
       "code": "00600.HK",
@@ -512,8 +620,14 @@
       "leader": "边缘AI芯片全球中高端视觉端侧推理第一",
       "risk": false,
       "advice": "IPO 28.20,暗盘-4.3%,基石16家(48.76%,~14.43亿HKD)含韦尔半导体。边缘AI芯片赛道好但连续亏损(-7.53/-8.61/-8.30亿)。破发状态,平/观察。",
-      "_price": 14.02,
-      "_chgFromIpo": -50.283687943262414
+      "_price": 13.92,
+      "_chgFromIpo": -50.638297872340424,
+      "raiseCap": null,
+      "riskLevel": "低",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 64
     },
     {
       "code": "03625.HK",
@@ -536,7 +650,13 @@
       "leader": "端侧音频AI",
       "advice": "无基石是亮点,但已涨137%涨幅透支。可小仓博弈,非主选。",
       "_price": 93,
-      "_chgFromIpo": 132.50000000000003
+      "_chgFromIpo": 132.50000000000003,
+      "raiseCap": null,
+      "riskLevel": "中",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 52
     },
     {
       "code": "02697.HK",
@@ -559,8 +679,14 @@
       "leader": "穿刺手术机器人国内出货量/营收市占率第一",
       "risk": true,
       "advice": "⚠️避雷:IPO 126.20(区间119.3-135.4下限),首日+197%~217%(收375.2),超购1790倍。无基石!手术机器人赛道前沿但年营收仅1218万、亏损9011万。总股本仅356万股(极小盘易操控),已涨526%严重透支。坚决不碰。",
-      "_price": 736,
-      "_chgFromIpo": 483.2012678288431
+      "_price": 725.5,
+      "_chgFromIpo": 474.88114104595877,
+      "raiseCap": null,
+      "riskLevel": "高",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 48
     },
     {
       "code": "02672.HK",
@@ -584,9 +710,15 @@
       "leader": "场景险互联网保险中介第三方第一(份额3.1%)",
       "risk": true,
       "advice": "⚠️避雷:IPO 15.60(区间下限),首日+311.86%(收64.25),超购242倍。微基石(0.4%)≈无,保险科技年亏4667万、经营现金流为负。已涨391%严重透支,散强机弱格局。坚决不碰。",
-      "_price": 60.95,
-      "_chgFromIpo": 290.70512820512823
+      "_price": 60.75,
+      "_chgFromIpo": 289.4230769230769,
+      "raiseCap": null,
+      "riskLevel": "高",
+      "lockup": null,
+      "unlockDate": null,
+      "floatShares": null,
+      "score": 48
     }
   ],
-  "hkdCnyRate": 0.857854
+  "hkdCnyRate": 0.85778
 }
