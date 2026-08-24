@@ -73,7 +73,11 @@ async function main(){
     }
   }
 
-  data.updated = new Date().toISOString().slice(0,16).replace('T',' ');
+  // 写入北京时间（本机可能非京时区，统一 +8 避免显示混乱）
+  const now = new Date();
+  const bj = new Date(now.getTime() + (8*60 + now.getTimezoneOffset())*60000);
+  const p2 = n => String(n).padStart(2,'0');
+  data.updated = `${bj.getFullYear()}-${p2(bj.getMonth()+1)}-${p2(bj.getDate())} ${p2(bj.getHours())}:${p2(bj.getMinutes())}`;
   fs.writeFileSync(FILE, JSON.stringify(data,null,2));
   console.log(`[update] 行情刷新完成 成功${ok}/失败${fail}  AH溢价${stocks.filter(s=>s._ahPremium!=null).length}只  时间${data.updated}`);
 }
