@@ -4,7 +4,8 @@ import { spawnSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-const repo = 'D:/workbuddy/新股入通';
+// 仓库路径：本地固定 Windows 路径；GitHub Actions 用 GITHUB_WORKSPACE 环境变量（Linux）
+const repo = process.env.GITHUB_WORKSPACE || 'D:/workbuddy/新股入通';
 
 // 找 git 可执行文件：优先 PATH，其次递归扫描 PortableGit 安装目录（任意层级）
 function findGit() {
